@@ -147,16 +147,15 @@ int main(){
     ew_chegadas.soma_areas += (tempo_decorrido - ew_chegadas.tempo_anterior) * ew_chegadas.num_eventos;
     ew_saidas.soma_areas += (tempo_decorrido - ew_saidas.tempo_anterior) * ew_saidas.num_eventos;
 
-    fprintf(ocupacao_file, "Maior tamanho de fila alcançado: %ld\n", fila_max);
-    fprintf(ocupacao_file, "Ocupação: %.2lf\n", soma_ocupacao / tempo_decorrido);
-
     double en_final = en.soma_areas / tempo_decorrido;
     double ew_final = (ew_chegadas.soma_areas - ew_saidas.soma_areas) / ew_chegadas.num_eventos;
     double lambda = ew_chegadas.num_eventos / tempo_decorrido;
 
-    fprintf(ocupacao_file, "E[N]: %.2lf\n", en_final);
-    fprintf(ocupacao_file, "E[W]: %.2lf\n", ew_final);
-    fprintf(ocupacao_file, "Erro de Little: %.2lf\n", en_final - lambda * ew_final);
+    printf("Maior tamanho de fila alcançado: %ld\n", fila_max);
+    printf("Ocupação: %.2lf\n", soma_ocupacao / tempo_decorrido);
+    printf("E[N]: %.2lf\n", en_final);
+    printf("E[W]: %.2lf\n", ew_final);
+    printf("Erro de Little: %.2lf\n", en_final - lambda * ew_final);
 
     // fechando arquivos
     fclose(ocupacao_file);
