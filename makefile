@@ -20,6 +20,7 @@ $(TARGET): $(SRC)
 # Rule to clean up the build
 clean:
 	rm -f $(TARGET)
+	rm -f out/*.dat
 
 # Phony targets
 .PHONY: all clean
