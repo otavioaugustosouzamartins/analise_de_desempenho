@@ -17,7 +17,7 @@ double uniforme(){
 }
 
 double gera_tempo(double l){
-    return (-1.0/l) * log(uniforme());
+    return (-1.0/l) * log(uniforme());;
 }
 
 double min(double n1, double n2, double n3){
@@ -32,37 +32,31 @@ void inicia_little(little *n){
     n->tempo_anterior = 0.0;
 }
 
+void simulacao(double parametro_chegada, double tempo_ocupacao, double tempo_simulacao, int semente){
+    printf("\n=========== Dados da ocupacao[%lf] ===========\n", tempo_ocupacao);
+    printf("Semente utilizada: %d", semente);
 
-int main(){
-   
-    FILE * ocupacao_file = fopen("out/ocupacao.dat", "w");
-    FILE * en_file = fopen("out/en.dat", "w");
-    FILE * ew_file = fopen("out/ew.dat", "w");
-    FILE * lambda_file = fopen("out/lambda.dat", "w");
-    FILE * erro_little_file = fopen("out/erro_little.dat", "w");
+
+    FILE * ocupacao_file = fopen("out/ocupacao.txt", "w");
+    FILE * en_file = fopen("out/en.txt", "w");
+    FILE * ew_file = fopen("out/ew.txt", "w");
+    FILE * lambda_file = fopen("out/lambda.txt", "w");
+    FILE * erro_little_file = fopen("out/erro_little.txt", "w");
 
     if (ocupacao_file == NULL || en_file == NULL || ew_file == NULL || 
         lambda_file == NULL || erro_little_file == NULL) {
         printf("Erro ao abrir um ou mais arquivos!\n");
-        return 1;
     }
 
-    int semente = 10;
-    srand(time(NULL));  // Gera semente com base no tempo atual
+    srand(semente);  // Gera semente com base no tempo atual
 
-    double parametro_chegada;
-    printf("Informe o tempo médio entre as chegadas (s): ");
-    scanf("%lf", &parametro_chegada);  // Correção para %lf
-    parametro_chegada = 1.0/parametro_chegada;
+    double parametro_saida = tempo_ocupacao * parametro_chegada;
+    printf("Taxa media chegada: %8lf\n", parametro_chegada);
+    printf("Taxa media saida: %8lf\n", parametro_saida);
 
-    double parametro_saida;
-    printf("Informe o tempo médio de atendimento (s): ");
-    scanf("%lf", &parametro_saida);  // Correção para %lf
-    parametro_saida = 1.0/parametro_saida;
 
-    double tempo_simulacao;
-    printf("Informe o tempo de simulacao (s): ");
-    scanf("%lf", &tempo_simulacao);  // Correção para %lf
+    parametro_chegada = 1.0/parametro_chegada; //2
+    parametro_saida = 1.0/parametro_saida; // 3,33
 
     double tempo_decorrido = 0.0;
     double tempo_chegada = gera_tempo(parametro_chegada);
@@ -118,7 +112,6 @@ int main(){
         }
 
         else {
-
             
             ew_chegadas.soma_areas += (tempo_decorrido - ew_chegadas.tempo_anterior) * ew_chegadas.num_eventos;
             ew_saidas.soma_areas += (tempo_decorrido - ew_saidas.tempo_anterior) * ew_saidas.num_eventos;
@@ -133,7 +126,7 @@ int main(){
             double ew_atual = (ew_chegadas.soma_areas - ew_saidas.soma_areas) / ew_chegadas.num_eventos;
             double lambda = ew_chegadas.num_eventos / tempo_decorrido;
 
-            fprintf(ocupacao_file, "Tempo: %.2lf s\n", proxima_coleta);
+            fprintf(ocupacao_file, "%.2lf ", tempo_decorrido);
             fprintf(ocupacao_file, "Maior tamanho de fila alcançado: %ld\n", fila_max);
             fprintf(ocupacao_file, "Ocupação: %.2lf\n", soma_ocupacao / tempo_decorrido);
             fprintf(ocupacao_file, "E[N]: %.2lf\n", en_atual);
@@ -152,17 +145,30 @@ int main(){
     double lambda = ew_chegadas.num_eventos / tempo_decorrido;
 
     printf("Maior tamanho de fila alcançado: %ld\n", fila_max);
-    printf("Ocupação: %.2lf\n", soma_ocupacao / tempo_decorrido);
-    printf("E[N]: %.2lf\n", en_final);
-    printf("E[W]: %.2lf\n", ew_final);
-    printf("Erro de Little: %.2lf\n", en_final - lambda * ew_final);
+    printf("Ocupação: %.8lf\n", soma_ocupacao / tempo_decorrido);
+    printf("Ocupação soma: %.8lf\n", soma_ocupacao);
+    printf("E[N]: %.8lf\n", en_final);
+    printf("E[W]: %.8lf\n", ew_final);
+    printf("Erro de Little: %.8lf\n", en_final - lambda * ew_final);
 
-    // fechando arquivos
+
+    // fechando arquivos0.85
     fclose(ocupacao_file);
     fclose(en_file);
     fclose(ew_file);
     fclose(lambda_file);
     fclose(erro_little_file);
+}
+
+
+int main(){
+
+    double ocupacoes[] = {0.85, 0.90, 0.95, 0.99};
+    int semente = 10;
+
+    for(int i = 0; i < 4; i++){
+        simulacao(0.5, ocupacoes[i], 100000, semente);
+    }
 
     return 0;
 }
