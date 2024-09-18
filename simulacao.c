@@ -36,12 +36,23 @@ void simulacao(double parametro_chegada, double tempo_ocupacao, double tempo_sim
     printf("\n=========== Dados da ocupacao[%lf] ===========\n", tempo_ocupacao);
     printf("Semente utilizada: %d", semente);
 
+    char nome_arquivo[100];
 
-    FILE * ocupacao_file = fopen("out/ocupacao.txt", "w");
-    FILE * en_file = fopen("out/en.txt", "w");
-    FILE * ew_file = fopen("out/ew.txt", "w");
-    FILE * lambda_file = fopen("out/lambda.txt", "w");
-    FILE * erro_little_file = fopen("out/erro_little.txt", "w");
+    sprintf(nome_arquivo, "out/ocupacao/%.2lf-ocupacao.txt", tempo_ocupacao);
+    FILE *ocupacao_file = fopen(nome_arquivo, "w");
+
+    sprintf(nome_arquivo, "out/en/%.2lf-en.txt", tempo_ocupacao);
+    FILE *en_file = fopen(nome_arquivo, "w");
+
+    sprintf(nome_arquivo, "out/ew/%.2lf-ew.txt", tempo_ocupacao);
+    FILE *ew_file = fopen(nome_arquivo, "w");
+
+    sprintf(nome_arquivo, "out/lambda/%.2lf-lambda.txt", tempo_ocupacao);
+    FILE *lambda_file = fopen(nome_arquivo, "w");
+
+    sprintf(nome_arquivo, "out/erro_little/%.2lf-little.txt", tempo_ocupacao);
+    FILE *erro_little_file = fopen(nome_arquivo, "w");
+
 
     if (ocupacao_file == NULL || en_file == NULL || ew_file == NULL || 
         lambda_file == NULL || erro_little_file == NULL) {
@@ -124,14 +135,14 @@ void simulacao(double parametro_chegada, double tempo_ocupacao, double tempo_sim
 
             double en_atual = en.soma_areas / tempo_decorrido;
             double ew_atual = (ew_chegadas.soma_areas - ew_saidas.soma_areas) / ew_chegadas.num_eventos;
-            double lambda = ew_chegadas.num_eventos / tempo_decorrido;
+            double lambda_atual = ew_chegadas.num_eventos / tempo_decorrido;
+            double erro_little_atual = en_atual - lambda_atual * ew_atual;
 
-            fprintf(ocupacao_file, "%.2lf ", tempo_decorrido);
-            fprintf(ocupacao_file, "Maior tamanho de fila alcançado: %ld\n", fila_max);
-            fprintf(ocupacao_file, "Ocupação: %.2lf\n", soma_ocupacao / tempo_decorrido);
-            fprintf(ocupacao_file, "E[N]: %.2lf\n", en_atual);
-            fprintf(ocupacao_file, "E[W]: %.2lf\n", ew_atual);
-            fprintf(ocupacao_file, "Erro de Little: %.2lf\n\n", en_atual - lambda * ew_atual);
+            fprintf(ocupacao_file, "%.8lf %.8lf\n", tempo_decorrido, soma_ocupacao/tempo_decorrido);
+            fprintf(en_file, "%.8lf %.8lf\n", tempo_decorrido, en_atual);
+            fprintf(lambda_file, "%.8lf %.8lf\n", tempo_decorrido, lambda_atual);
+            fprintf(ew_file, "%.8lf %.8lf\n", tempo_decorrido, ew_atual);
+            fprintf(erro_little_file, "%.8lf %.8lf\n", tempo_decorrido, erro_little_atual);
 
             proxima_coleta += 100.0;
         }

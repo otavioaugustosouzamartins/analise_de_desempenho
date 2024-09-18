@@ -20,6 +20,11 @@ $(TARGET): $(SRC)
 # Rule to clean up the build
 clean:
 	rm -f $(TARGET)
+	rm -f out/en/*.txt
+	rm -f out/erro_little/*.txt
+	rm -f out/ew/*.txt
+	rm -f out/ocupacao/*.txt
+	rm -f out/lambda/*.txt
 	rm -f out/*.txt
 
 # Phony targets
