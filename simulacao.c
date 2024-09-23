@@ -177,8 +177,12 @@ int main(){
     double ocupacoes[] = {0.85, 0.90, 0.95, 0.99};
     int semente = 10;
 
+    // Todos em segundos
+    double taxa_chegada = 5;
+    double tempo_simulacao = 100000.0;
+
     for(int i = 0; i < 4; i++){
-        simulacao(0.5, ocupacoes[i], 100000, semente);
+        simulacao(taxa_chegada, ocupacoes[i], tempo_simulacao, semente);
     }
 
     return 0;

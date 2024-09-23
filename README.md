@@ -1,24 +1,14 @@
-# Performance Analysis class [en-us]
-## Discrete time event simulation (simulação de eventos discretos).
-Content offered in the Performance Analysis course of the Bachelor's Degree in Computer Science at the Federal University of Alfenas.
+# Performance Analysis - First Simulator
 
-The objective is to develop a discrete event simulation, where the inter-arrival time follows an Exponential distribution, as does the service time.
+First simulator developed for performance analysis course at UNIFAL-MG.
 
-According to [Kendall's notation](https://en.wikipedia.org/wiki/Kendall%27s_notation), this simulation can be classified as an M/M/1 model.
+Students:
+- Otávio Augusto Souza Martins
+- Marcos Vyctor Fonseca Galupo
 
-## Contact
-Feel free to reach me and share your thoughts at flavio.gonzaga(at)unifal-mg.edu.br.
+Usage:
 
-
-# Disciplina de Análise de Desempenho [pt-br]
-
-## Simulação de eventos de tempo discreto
-Conteúdo oferecido na disciplina de Análise de Desempenho do curso de Bacharelado em Ciência da Computação da Universidade Federal de Alfenas.
-
-O objetivo é o desenvolvimento de uma simulação de eventos discretos, onde o intervalo entre chegadas ocorre segundo distribuição Exponencial, assim como o tempo de serviço.
-
-De acordo com a [notação de Kendall](https://en.wikipedia.org/wiki/Kendall%27s_notation), esta simulação pode ser classificada como sendo um modelo M/M/1.
-
-## Contato
-Fique a vontade para entrar em contato e compartilhar suas ideias em flavio.gonzaga(at)unifal-mg.edu.br
-
+- Set "taxa_chegada" (average arrival rate), "tempo_simulacao" (simulation time) and "semente" (seed) on **main** function.
+- Run "make"
+- ./simulacao
+- Run: "gnuplot plot-data.plt"
